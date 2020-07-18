@@ -39,34 +39,48 @@ module Vine
     
       file
     end
-    
+
     def card_sheet(params)
       url     = params.fetch(:url)
-      message = params.fetch(:message)
+      message = params[:message]
   
-      pdf = Prawn::Document.new
-    
+      pdf    = Prawn::Document.new
+      height = card_height(message)
+
+      pdf.text url, size: 10
+      pdf.move_down 10
+
       pdf.create_stamp('card') do
-        pdf.bounding_box([0, pdf.cursor], width: CARD_WIDTH, height: CARD_HEIGHT) do
-          pdf.move_down 5
-          pdf.text_box(message, at: [8, pdf.cursor - 5], width: CARD_WIDTH - 13.119, height: 50, overflow: :shrink_to_fit, min_font_size: 8)
-          pdf.move_down 5
-          pdf.image(spit(qr_code(url)).path, at: [0, pdf.cursor - 45], fit: [QR_SIZE, QR_SIZE])
+        pdf.bounding_box([0, pdf.cursor], width: CARD_WIDTH, height: height) do
+          if message.present?
+            pdf.move_down 5
+            pdf.text_box(message, at: [8, pdf.cursor - 5], width: CARD_WIDTH - 13.119, height: 50, overflow: :shrink_to_fit, min_font_size: 8)
+            pdf.move_down 5
+          end
+          img_y  = message.blank? ? pdf.cursor : pdf.cursor - 45
+          pdf.image(spit(qr_code(url)).path, at: [0, img_y], fit: [QR_SIZE, QR_SIZE])
           pdf.transparent(0.5) { pdf.stroke_bounds }
         end
       end
     
-      stamp_cards(pdf)
+      stamp_cards(pdf, height)
     
       pdf.render
     end
 
     private
 
-    def stamp_cards(pdf)
-      (0..2).each do |m|
-        (0..2).each do |n|
-          pdf.stamp_at 'card', [(CARD_WIDTH + CARD_PADDING) * n, ((CARD_HEIGHT + CARD_PADDING) * m) * -1]
+    def card_height(message)
+      return QR_SIZE if message.blank?
+
+      CARD_HEIGHT
+    end
+    
+    def stamp_cards(pdf, height)
+      rows = height == QR_SIZE ? 3 : 2
+      (0..rows).each do |row|
+        (0..2).each do |col|
+          pdf.stamp_at 'card', [(CARD_WIDTH + CARD_PADDING) * col, ((height + CARD_PADDING) * row) * -1]
         end
       end
     end
