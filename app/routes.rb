@@ -2,8 +2,24 @@ require 'sinatra'
 require_relative '../lib/vine'
 
 module Helpers
+  def production?
+    ENV['APP_ENV'] == 'production'
+  end
+  
+  def url_scheme
+    return 'https' if production?
+
+    'http'
+  end
+
+  def port
+    return '' if production?
+
+    ":#{request.env['SERVER_PORT']}"
+  end
+
   def root_url
-    @root_url ||= "#{request.env['rack.url_scheme']}://#{request.env['SERVER_NAME']}:#{request.env['SERVER_PORT']}"
+    @root_url ||= "#{url_scheme}://#{request.env['SERVER_NAME']}#{port}"
   end
 
   def url
