@@ -3,23 +3,16 @@ require_relative '../lib/vine'
 
 module Helpers
   def production?
-    ENV['APP_ENV'] == 'production'
-  end
-  
-  def url_scheme
-    return 'https' if production?
-
-    'http'
+    ENV['RACK_ENV'] == 'production'
   end
 
-  def port
-    return '' if production?
-
-    ":#{request.env['SERVER_PORT']}"
+  def request_url
+    URI(request.url)
   end
 
   def root_url
-    @root_url ||= "#{url_scheme}://#{request.env['SERVER_NAME']}#{port}"
+    uri = request_url
+    "#{uri.scheme}://#{uri.host}:#{uri.port}"
   end
 
   def url
