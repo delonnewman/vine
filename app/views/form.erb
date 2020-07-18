@@ -1,16 +1,10 @@
-<% unless url %>
-  <p class="py-2 px-3 mb-4 mx-4 border rounded bg-light">For a smoother experience, copy this link as a bookmark in your browser:
-  <a href="javascript:<%= erb :'bookmarklet.js' %>">Generate QR Codes</a>. Then click the bookmark any time you visit a
-  page you'd like to refer others to.</p>
-<% end %>
-
 <form action="/" method="post">
   <div class="form-group">
     <% if url %>
       <input disabled type="text" id="url" class="form-control" value="<%= url %>">
       <input type="hidden" name="url" value="<%= url %>">
     <% else %>
-      <label for="url">Please enter your URL and a (optionally) message below</label>
+      <label for="url">Please enter your URL and (optionally) a message below</label>
       <input type="text" id="url" class="form-control" name="url" placeholder="http://example.com">
     <% end %>
   </div>
@@ -22,3 +16,15 @@
   </div>
   <button class="btn btn-primary">Generate</button>
 </form>
+
+<% unless url %>
+  <div class="mt-4 mx-4 pt-2 pb-3 px-3 border rounded bg-light">
+    <p>To save a step, copy this link
+    (<a href="javascript:<%= erb :'bookmarklet.js' %>">Generate QR Codes</a>) and save it as a bookmark.
+    Then any time you visit a page you'd like to create QR codes for click the bookmark.</p>
+    <div class="text-center">
+      <img src="images/bookmark-screenshot.png" class="img-thumbnail rounded" alt="Screenshot of 'Generate QR Codes' bookmark" width="400" height="287">
+    </div>
+  </div>
+<% end %>
+
