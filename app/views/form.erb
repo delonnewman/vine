@@ -1,3 +1,9 @@
+<% unless url %>
+  <p class="py-2 px-3 mb-4 mx-4 border rounded bg-light">For a smoother experience, copy this link as a bookmark in your browser:
+  <a href="javascript:<%= erb :'bookmarklet.js' %>">Generate QR Codes</a>. Then click the bookmark any time you visit a
+  page you'd like to refer others to.</p>
+<% end %>
+
 <form action="/" method="post">
   <div class="form-group">
     <% if url %>
@@ -16,5 +22,3 @@
   </div>
   <button class="btn btn-primary">Generate</button>
 </form>
-
-<p>Add this bookmark to your browser: <a href="javascript:<%= erb :'bookmarklet.js' %>">Generate QR codes for this URL</a>.</p>
