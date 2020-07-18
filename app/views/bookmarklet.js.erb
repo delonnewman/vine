@@ -1,1 +1,1 @@
-(function(){this.location=['<%= root_url %>/?url=',encodeURI(this.location.toString().replace('#','%2523')),'&message=',this.prompt('Optionally enter a message you\'d like to add to your QR codes')].join('');}.call(window))
+(function(){var msg=this.prompt('Optionally enter a message you\'d like to add to your QR codes');if(msg!==null)this.location=['<%= root_url %>/?url=',encodeURI(this.location.toString().replace('#','%2523')),'&message=', msg].join('');}.call(window))
