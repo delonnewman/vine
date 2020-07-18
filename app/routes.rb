@@ -25,12 +25,20 @@ helpers do
   include Vine::Core
 end
 
-get '/?' do
+get '/generator' do
   erb :form
+end
+
+get '/?' do
+  if params[:url]
+    content_type 'application/pdf'
+    card_sheet(params)
+  else
+    redirect '/generator'
+  end
 end
 
 post '/' do
   content_type 'application/pdf'
-
   card_sheet(params)
 end
