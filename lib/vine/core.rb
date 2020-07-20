@@ -7,6 +7,9 @@ CARD_HEIGHT  = QR_SIZE * 1.38
 CARD_WIDTH   = QR_SIZE
 CARD_PADDING = 40
 
+FONT_DIR     = File.expand_path(File.join(__dir__, '../../resources/fonts'))
+DEFAULT_FONT = File.join(FONT_DIR, 'MerriweatherSans-Regular.ttf')
+
 module Vine
   module Core
     def qr_code(url)
@@ -47,12 +50,19 @@ module Vine
       pdf    = Prawn::Document.new
       height = card_height(message)
 
+      pdf.font_familes.update(
+        'Default' => {
+          :normal => { :file => DEFAULT_FONT, :font => 'MeriweatherSans' }
+        }
+      )
+
       pdf.text url, size: 10
       pdf.move_down 10
 
       pdf.create_stamp('card') do
         pdf.bounding_box([0, pdf.cursor], width: CARD_WIDTH, height: height) do
           if message.present?
+            pdf.font 'Default'
             pdf.move_down 5
             pdf.text_box(message, at: [8, pdf.cursor - 5], width: CARD_WIDTH - 13.119, height: 50, overflow: :shrink_to_fit, min_font_size: 8)
             pdf.move_down 5
