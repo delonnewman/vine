@@ -8,7 +8,7 @@ GEM
     prawn (2.2.2)
       pdf-core (~> 0.7.0)
       ttfunk (~> 1.5)
-    rack (2.2.3)
+    rack (2.2.4)
     rack-protection (2.2.0)
       rack
     rqrcode (1.1.2)
@@ -36,4 +36,4 @@ RUBY VERSION
    ruby 2.7.5p203
 
 BUNDLED WITH
-   2.3.7
+   2.3.18
